@@ -1,0 +1,39 @@
+import mongoose from "mongoose";
+
+const contactMessageSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    telephone: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    from: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    subject: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    message: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    isResponded: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true },
+);
+
+const ContactMessage = mongoose.model("ContactMessage", contactMessageSchema);
+export default ContactMessage;
