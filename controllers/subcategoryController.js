@@ -9,7 +9,7 @@ export const createSubcategory = async (req, res) => {
     if (!name || !description || !categoryId) {
       return res.status(400).json({
         success: false,
-        message: "Name, description, and category are required",
+        message: "Name, description, and category are required"
       });
     }
 
@@ -18,27 +18,27 @@ export const createSubcategory = async (req, res) => {
     if (!categoryExists) {
       return res.status(400).json({
         success: false,
-        message: "Category not found",
+        message: "Category not found"
       });
     }
 
     const subcategory = await Subcategory.create({
       name,
       description,
-      category: categoryId,
+      category: categoryId
     });
 
     res.status(201).json({
       success: true,
       message: "Subcategory created successfully",
-      subcategory,
+      subcategory
     });
   } catch (error) {
     console.error("Error creating subcategory:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while creating the subcategory",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -46,25 +46,26 @@ export const createSubcategory = async (req, res) => {
 // Get all subcategories
 export const getAllSubcategories = async (req, res) => {
   try {
-    const subcategories = await Subcategory.find().populate("category");
+    const subcategories = await Subcategory.find().populate("category").sort({ createdAt: -1 });
 
-    if (!subcategories.length) {
-      return res.status(404).json({
+    if (!subcategories) {
+      return res.status(200).json({
         success: false,
         message: "No subcategories found",
+        subcategories
       });
     }
 
     res.status(200).json({
       success: true,
-      subcategories,
+      subcategories
     });
   } catch (error) {
     console.error("Error fetching subcategories:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while fetching the subcategories",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -77,22 +78,22 @@ export const getSubcategoryById = async (req, res) => {
       await Subcategory.findById(subcategoryId).populate("category");
 
     if (!subcategory) {
-      return res.status(404).json({
-        success: false,
-        message: "Subcategory not found",
+      return res.status(200).json({
+        success: true,
+        message: "No subcategory found"
       });
     }
 
     res.status(200).json({
       success: true,
-      subcategory,
+      subcategory
     });
   } catch (error) {
     console.error("Error fetching subcategory:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while fetching the subcategory",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -108,7 +109,7 @@ export const updateSubcategory = async (req, res) => {
     if (!categoryExists) {
       return res.status(400).json({
         success: false,
-        message: "Category not found",
+        message: "Category not found"
       });
     }
 
@@ -116,7 +117,7 @@ export const updateSubcategory = async (req, res) => {
     if (!subcategory) {
       return res.status(404).json({
         success: false,
-        message: "Subcategory not found",
+        message: "Subcategory not found"
       });
     }
 
@@ -129,14 +130,14 @@ export const updateSubcategory = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Subcategory updated successfully",
-      subcategory,
+      subcategory
     });
   } catch (error) {
     console.error("Error updating subcategory:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while updating the subcategory",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -150,7 +151,7 @@ export const deleteSubcategory = async (req, res) => {
     if (!subcategory) {
       return res.status(404).json({
         success: false,
-        message: "Subcategory not found",
+        message: "Subcategory not found"
       });
     }
 
@@ -158,14 +159,14 @@ export const deleteSubcategory = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Subcategory deleted successfully",
+      message: "Subcategory deleted successfully"
     });
   } catch (error) {
     console.error("Error deleting subcategory:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while deleting the subcategory",
-      error: error.message,
+      error: error.message
     });
   }
 };

@@ -15,7 +15,7 @@ export const createFaq = async (req, res) => {
 // Get all FAQs
 export const getAllFaqs = async (req, res) => {
   try {
-    const faqs = await Faq.find();
+    const faqs = await Faq.find().sort({ createdAt: -1 });
     res.status(200).json({ success: true, faqs });
   } catch (error) {
     res.status(500).json({ success: false, message: "Failed to get FAQs" });
@@ -27,7 +27,7 @@ export const updateFaq = async (req, res) => {
   try {
     const { id } = req.params;
     const updatedFaq = await Faq.findByIdAndUpdate(id, req.body, {
-      new: true,
+      new: true
     });
     if (!updatedFaq) {
       return res.status(404).json({ success: false, message: "FAQ not found" });

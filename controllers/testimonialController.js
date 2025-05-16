@@ -1,22 +1,11 @@
 import Testimonial from "../models/Testimonial.js";
-import Project from "../models/Project.js";
 import { uploadTestimonialImage } from "../utils/cloudinary.js";
 
 // CREATE
 export const createTestimonial = async (req, res) => {
   try {
-    const { name, company, position, message, rating, image, project } =
+    const { name, company, position, message, rating, image } =
       req.body;
-
-    // Validate if project exists (if provided)
-    if (project) {
-      const projectExists = await Project.findById(project);
-      if (!projectExists) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Project not found" });
-      }
-    }
 
     const imageUrl = await uploadTestimonialImage(image);
 
@@ -26,8 +15,7 @@ export const createTestimonial = async (req, res) => {
       position,
       message,
       rating,
-      image: imageUrl,
-      project,
+      image: imageUrl
     });
 
     await testimonial.save();
@@ -35,14 +23,14 @@ export const createTestimonial = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Testimonial created successfully",
-      testimonial,
+      testimonial
     });
   } catch (error) {
     console.error("Create Testimonial Error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to create testimonial",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -50,24 +38,19 @@ export const createTestimonial = async (req, res) => {
 // GET ALL (optionally filtered by approval or project)
 export const getAllTestimonials = async (req, res) => {
   try {
-    const { approved, project } = req.query;
-
-    const query = {};
-    if (approved !== undefined) query.isApproved = approved === "true";
-    if (project) query.project = project;
-
-    const testimonials = await Testimonial.find(query).populate("project");
+    const total = await Testimonial.countDocuments();
+    const testimonials = await Testimonial.aggregate([{ $sample: { size: total } }]);
 
     res.status(200).json({
       success: true,
-      testimonials,
+      testimonials
     });
   } catch (error) {
-    console.error("Get All Testimonials Error:", error);
+    console.error("Get Random Testimonials Error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to retrieve testimonials",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -76,7 +59,7 @@ export const getAllTestimonials = async (req, res) => {
 export const getTestimonialById = async (req, res) => {
   try {
     const { id } = req.params;
-    const testimonial = await Testimonial.findById(id).populate("project");
+    const testimonial = await Testimonial.findById(id);
 
     if (!testimonial) {
       return res
@@ -90,7 +73,7 @@ export const getTestimonialById = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to retrieve testimonial",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -101,22 +84,12 @@ export const updateTestimonial = async (req, res) => {
     const { id } = req.params;
     const updates = req.body;
 
-    if (updates.project) {
-      const projectExists = await Project.findById(updates.project);
-      if (!projectExists) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Project not found" });
-      }
-    }
-
     if (updates.image) {
-      const uploadedImageUrl = await uploadTestimonialImage(updates.image);
-      updates.image = uploadedImageUrl;
+      updates.image = await uploadTestimonialImage(updates.image);
     }
 
     const updated = await Testimonial.findByIdAndUpdate(id, updates, {
-      new: true,
+      new: true
     });
 
     if (!updated) {
@@ -128,14 +101,14 @@ export const updateTestimonial = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Testimonial updated successfully",
-      testimonial: updated,
+      testimonial: updated
     });
   } catch (error) {
     console.error("Update Testimonial Error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to update testimonial",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -154,14 +127,14 @@ export const deleteTestimonial = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Testimonial deleted successfully",
+      message: "Testimonial deleted successfully"
     });
   } catch (error) {
     console.error("Delete Testimonial Error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to delete testimonial",
-      error: error.message,
+      error: error.message
     });
   }
 };

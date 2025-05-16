@@ -8,20 +8,13 @@ const generateUserId = () => Math.floor(100000 + Math.random() * 900000);
 
 // Helper: Validate password strength
 const validatePassword = (password) => {
-  const errors = [];
-
-  if (password.length < 8)
-    errors.push("Password must be at least 8 characters long");
-  if (!/[A-Z]/.test(password))
-    errors.push("Password must contain at least one uppercase letter");
-  if (!/[a-z]/.test(password))
-    errors.push("Password must contain at least one lowercase letter");
-  if (!/[0-9]/.test(password))
-    errors.push("Password must contain at least one number");
-  if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password))
-    errors.push("Password must contain at least one special character");
-
-  return errors;
+  return {
+    lengthValid: password.length >= 8,
+    hasUpper: /[A-Z]/.test(password),
+    hasLower: /[a-z]/.test(password),
+    hasNumber: /[0-9]/.test(password),
+    hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+  };
 };
 
 // Register user
@@ -33,10 +26,10 @@ export const registerUser = async (req, res) => {
     const profilePicture = req.body.profilePicture;
     const roles = Array.isArray(req.body.roles) ? req.body.roles : [];
 
-    if (!name || !email || !phone || !profilePicture) {
+    if (!name || !email || !phone) {
       return res.status(400).json({
         success: false,
-        message: "Name, email, profilePicture and phone are required",
+        message: "Name, email and phone are required"
       });
     }
 
@@ -44,7 +37,7 @@ export const registerUser = async (req, res) => {
     if (userExists) {
       return res.status(400).json({
         success: false,
-        message: "User already exists",
+        message: "User already exists"
       });
     }
 
@@ -67,7 +60,7 @@ export const registerUser = async (req, res) => {
       profilePicture: profilePictureUrl,
       userId,
       password: tempPassword,
-      roles: roles.length > 0 ? roles : ["viewer"], // fallback to 'viewer' role
+      roles: roles.length > 0 ? roles : ["viewer"] // fallback to 'viewer' role
     });
 
     await sendEmail({
@@ -89,16 +82,17 @@ Here are your secure login credentials:
 
 Build with confidence,
 The CODABS Team 🏗️
-      `.trim(),
+      `.trim()
     });
 
-    sendToken(res, user, `User registered with ID: ${userId}`, 201);
+    res.status(200).json({ success: true, message: `User registered with ID: ${userId}`, user });
+
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred during registration",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -127,7 +121,7 @@ export const loginUser = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "An error occurred during login",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -149,7 +143,7 @@ export const resetPassword = async (req, res) => {
   if (!userId || !newPassword) {
     return res.status(400).json({
       success: false,
-      message: "User ID and new password are required",
+      message: "User ID and new password are required"
     });
   }
 
@@ -158,7 +152,7 @@ export const resetPassword = async (req, res) => {
     return res.status(400).json({
       success: false,
       message: "New password is not strong enough",
-      errors,
+      errors
     });
   }
 
@@ -181,7 +175,7 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "An error occurred during password reset",
-      error: error.message,
+      error: error.message
     });
   }
 };

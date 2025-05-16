@@ -8,7 +8,7 @@ export const createCategory = async (req, res) => {
     if (!name || !description) {
       return res.status(400).json({
         success: false,
-        message: "Name and description are required",
+        message: "Name and description are required"
       });
     }
 
@@ -16,26 +16,26 @@ export const createCategory = async (req, res) => {
     if (categoryExists) {
       return res.status(400).json({
         success: false,
-        message: "Category already exists",
+        message: "Category already exists"
       });
     }
 
     const category = await Category.create({
       name,
-      description,
+      description
     });
 
     res.status(201).json({
       success: true,
       message: "Category created successfully",
-      category,
+      category
     });
   } catch (error) {
     console.error("Error creating category:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while creating the category",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -45,23 +45,24 @@ export const getAllCategories = async (req, res) => {
   try {
     const categories = await Category.find();
 
-    if (!categories.length) {
-      return res.status(404).json({
-        success: false,
+    if (!categories) {
+      return res.status(200).json({
+        success: true,
         message: "No categories found",
+        categories
       });
     }
 
     res.status(200).json({
       success: true,
-      categories,
+      categories
     });
   } catch (error) {
     console.error("Error fetching categories:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while fetching the categories",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -75,20 +76,20 @@ export const getCategoryById = async (req, res) => {
     if (!category) {
       return res.status(404).json({
         success: false,
-        message: "Category not found",
+        message: "Category not found"
       });
     }
 
     res.status(200).json({
       success: true,
-      category,
+      category
     });
   } catch (error) {
     console.error("Error fetching category:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while fetching the category",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -104,7 +105,7 @@ export const updateCategory = async (req, res) => {
     if (!category) {
       return res.status(404).json({
         success: false,
-        message: "Category not found",
+        message: "Category not found"
       });
     }
 
@@ -116,14 +117,14 @@ export const updateCategory = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Category updated successfully",
-      category,
+      category
     });
   } catch (error) {
     console.error("Error updating category:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while updating the category",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -138,7 +139,7 @@ export const deleteCategory = async (req, res) => {
     if (!category) {
       return res.status(404).json({
         success: false,
-        message: "Category not found",
+        message: "Category not found"
       });
     }
 
@@ -146,14 +147,14 @@ export const deleteCategory = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Category deleted successfully",
+      message: "Category deleted successfully"
     });
   } catch (error) {
     console.error("Error deleting category:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while deleting the category",
-      error: error.message,
+      error: error.message
     });
   }
 };

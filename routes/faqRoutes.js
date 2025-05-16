@@ -3,25 +3,25 @@ import {
   createFaq,
   getAllFaqs,
   updateFaq,
-  deleteFaq,
+  deleteFaq
 } from "../controllers/faqController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 import { authorizeRoles } from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", protect, getAllFaqs); // Admin
+router.get("/", getAllFaqs); // Admin
 router.post(
   "/",
   protect,
   authorizeRoles("superadmin", "admin", "editor"),
-  createFaq,
+  createFaq
 );
 router.put(
   "/:id",
   protect,
   authorizeRoles("superadmin", "admin", "editor"),
-  updateFaq,
+  updateFaq
 );
 router.delete("/:id", protect, authorizeRoles("superadmin"), deleteFaq);
 

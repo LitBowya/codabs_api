@@ -9,12 +9,13 @@ const AppointmentSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["pending", "accepted", "rejected"],
-      default: "pending",
+      default: "pending"
     },
-    reasonForRejection: { type: String },
+    reasonForRejection: { type: String, default: null },
     message: { type: String },
+    isAvailable: { type: Boolean, default: false }
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 export default mongoose.model("Appointment", AppointmentSchema);

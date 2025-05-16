@@ -7,8 +7,8 @@ const TeamMemberSchema = new mongoose.Schema(
     roles: [
       {
         type: String,
-        enum: ["Leadership", "Consultancy", "Design", "Construction"],
-      },
+        enum: ["Leadership", "Consultancy", "Design", "Construction"]
+      }
     ],
     bio: { type: String, required: true },
     image: { type: String, required: true }, // Image URL from Cloudinary
@@ -17,10 +17,11 @@ const TeamMemberSchema = new mongoose.Schema(
       twitter: { type: String },
       facebook: { type: String },
       instagram: { type: String },
+      whatsapp: { type: String }
     },
-    isActive: { type: Boolean, default: true }, // To activate or deactivate the team member
+    isActive: { type: Boolean, default: true } // To activate or deactivate the team member
   },
-  { timestamps: true }, // To automatically add createdAt and updatedAt
+  { timestamps: true } // To automatically add createdAt and updatedAt
 );
 
 export default mongoose.model("TeamMember", TeamMemberSchema);

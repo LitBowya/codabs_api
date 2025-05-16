@@ -3,14 +3,16 @@ import {
   registerUser,
   loginUser,
   logoutUser,
-  resetPassword,
+  resetPassword
 } from "../controllers/authController.js";
+import { authorizeRoles } from "../middlewares/roleMiddleware.js";
+import { protect } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
 // @route   POST /api/auth/register
 // @desc    Register a new user
-router.post("/register", registerUser);
+router.post("/register", protect, authorizeRoles("superadmin", "admin"), registerUser);
 
 // @route   POST /api/auth/login
 // @desc    Login existing user

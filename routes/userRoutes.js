@@ -4,21 +4,21 @@ import {
   getUserById,
   updateUser,
   updateUserRole,
-  deleteUser,
+  deleteUser
 } from "../controllers/userController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 import { authorizeRoles } from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", protect, authorizeRoles("superadmin", "admin"), getAllUsers);
-router.get("/:id", protect, authorizeRoles("superadmin", "admin"), getUserById);
-router.put("/:id", protect, updateUser);
+router.get("/", protect, getAllUsers);
+router.get("/:id", protect, getUserById);
+router.put("/:id", protect, authorizeRoles("superadmin", "admin"), updateUser);
 router.put(
   "/:id/role",
   protect,
   authorizeRoles("superadmin", "admin"),
-  updateUserRole,
+  updateUserRole
 );
 router.delete("/:id", protect, authorizeRoles("superadmin"), deleteUser);
 

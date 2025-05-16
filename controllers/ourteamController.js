@@ -9,7 +9,7 @@ export const createTeamMember = async (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "All required fields (name, position, roles, bio, image) must be provided.",
+          "All required fields (name, position, roles, bio, image) must be provided."
       });
     }
 
@@ -22,7 +22,7 @@ export const createTeamMember = async (req, res) => {
       roles,
       bio,
       image: imageUrl, // URL of the uploaded image
-      socialLinks,
+      socialLinks
     });
 
     await teamMember.save();
@@ -30,39 +30,39 @@ export const createTeamMember = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Team member added successfully",
-      teamMember,
+      teamMember
     });
   } catch (error) {
     console.error("Error creating team member:", error);
     res.status(500).json({
       success: false,
       message: "Failed to create team member",
-      error: error.message,
+      error: error.message
     });
   }
 };
 
 export const getAllTeamMembers = async (req, res) => {
   try {
-    const teamMembers = await TeamMember.find();
+    const teamMembers = await TeamMember.find().sort({ createdAt: -1 });
 
     if (!teamMembers) {
       res.status(404).json({
         success: false,
-        message: "No team member found",
+        message: "No team member found"
       });
     }
 
     res.status(200).json({
       success: true,
-      teamMembers,
+      teamMembers
     });
   } catch (error) {
     console.error("Error fetching team members:", error);
     res.status(500).json({
       success: false,
       message: "Failed to fetch team members",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -75,20 +75,20 @@ export const getTeamMemberById = async (req, res) => {
     if (!teamMember) {
       return res.status(404).json({
         success: false,
-        message: "Team member not found",
+        message: "Team member not found"
       });
     }
 
     res.status(200).json({
       success: true,
-      teamMember,
+      teamMember
     });
   } catch (error) {
     console.error("Error fetching team member:", error);
     res.status(500).json({
       success: false,
       message: "Failed to fetch team member",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -104,7 +104,7 @@ export const updateTeamMember = async (req, res) => {
     if (!teamMember) {
       return res.status(404).json({
         success: false,
-        message: "Team member not found",
+        message: "Team member not found"
       });
     }
 
@@ -129,14 +129,14 @@ export const updateTeamMember = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Team member updated successfully",
-      teamMember,
+      teamMember
     });
   } catch (error) {
     console.error("Error updating team member:", error);
     res.status(500).json({
       success: false,
       message: "Failed to update team member",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -150,20 +150,20 @@ export const deleteTeamMember = async (req, res) => {
     if (!teamMember) {
       return res.status(404).json({
         success: false,
-        message: "Team member not found",
+        message: "Team member not found"
       });
     }
 
     res.status(200).json({
       success: true,
-      message: "Team member deleted successfully",
+      message: "Team member deleted successfully"
     });
   } catch (error) {
     console.error("Error deleting team member:", error);
     res.status(500).json({
       success: false,
       message: "Failed to delete team member",
-      error: error.message,
+      error: error.message
     });
   }
 };

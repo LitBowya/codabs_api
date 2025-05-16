@@ -12,7 +12,7 @@ export const createService = async (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "All required fields (title, description, images, and category) must be provided.",
+          "All required fields (title, description, images, and category) must be provided."
       });
     }
 
@@ -43,7 +43,7 @@ export const createService = async (req, res) => {
       description,
       images: imageUrls,
       category,
-      subcategory,
+      subcategory
     });
 
     await service.save();
@@ -51,14 +51,14 @@ export const createService = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Service created successfully.",
-      service,
+      service
     });
   } catch (error) {
     console.error("Create Service Error:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while creating the service.",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -66,14 +66,15 @@ export const createService = async (req, res) => {
 // READ - Get all services
 export const getAllServices = async (req, res) => {
   try {
-    const services = await Service.find().populate("category subcategory");
+    const services = await Service.find().populate("category subcategory").sort({ createdAt: -1 });
+    ;
     res.status(200).json({ success: true, services });
   } catch (error) {
     console.error("Get All Services Error:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while fetching the services.",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -96,7 +97,7 @@ export const getServiceById = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "An error occurred while fetching the service.",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -155,14 +156,14 @@ export const updateService = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Service updated successfully.",
-      service,
+      service
     });
   } catch (error) {
     console.error("Update Service Error:", error);
     res.status(500).json({
       success: false,
       message: "An error occurred while updating the service.",
-      error: error.message,
+      error: error.message
     });
   }
 };
@@ -189,7 +190,7 @@ export const deleteService = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "An error occurred while deleting the service.",
-      error: error.message,
+      error: error.message
     });
   }
 };

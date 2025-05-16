@@ -4,40 +4,31 @@ const TestimonialSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: true
     },
     company: {
       type: String,
-      default: "",
+      default: ""
     },
     position: {
       type: String,
-      default: "",
+      default: ""
     },
     message: {
       type: String,
-      required: true,
+      required: true
     },
     rating: {
       type: Number,
       min: 1,
       max: 5,
-      default: 5,
+      default: 5
     },
     image: {
-      type: String, // Cloudinary URL or fallback default
-    },
-    project: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Project",
-      required: false,
-    },
-    isApproved: {
-      type: Boolean,
-      default: false, // Testimonials must be approved before being public
-    },
+      type: String // Cloudinary URL or fallback default
+    }
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 export default mongoose.model("Testimonial", TestimonialSchema);

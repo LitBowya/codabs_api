@@ -1,11 +1,15 @@
 import cloudinary from "cloudinary";
 import { v2 as cloudinaryV2 } from "cloudinary";
+import { JSDOM } from "jsdom";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Cloudinary configuration
 cloudinaryV2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 // Function to upload images to Cloudinary
@@ -17,7 +21,7 @@ export const uploadServiceImages = async (images) => {
       // Upload each image (buffer) to Cloudinary
       const uploadResponse = await cloudinaryV2.uploader.upload(image, {
         resource_type: "auto", // Cloudinary automatically detects the file type (image/video/etc.)
-        folder: "services", // Optional: specify the folder in Cloudinary
+        folder: "services" // Optional: specify the folder in Cloudinary
       });
 
       uploadedImages.push(uploadResponse.secure_url); // Push the image URL to the uploadedImages array
@@ -38,7 +42,7 @@ export const uploadProjectImages = async (images) => {
       // Upload each image (buffer) to Cloudinary
       const uploadResponse = await cloudinaryV2.uploader.upload(image, {
         resource_type: "auto", // Cloudinary automatically detects the file type (image/video/etc.)
-        folder: "projects", // Optional: specify the folder in Cloudinary
+        folder: "projects" // Optional: specify the folder in Cloudinary
       });
 
       uploadedImages.push(uploadResponse.secure_url); // Push the image URL to the uploadedImages array
@@ -56,7 +60,7 @@ export const uploadTestimonialImage = async (image) => {
     // Upload the image to Cloudinary
     const uploadResponse = await cloudinaryV2.uploader.upload(image, {
       resource_type: "auto", // Cloudinary will auto-detect the file type
-      folder: "testimonials", // Optional: specify the folder in Cloudinary
+      folder: "testimonials" // Optional: specify the folder in Cloudinary
     });
 
     // Return the image URL
@@ -72,7 +76,7 @@ export const uploadBlogCoverImage = async (image) => {
     // Upload the image to Cloudinary
     const uploadResponse = await cloudinaryV2.uploader.upload(image, {
       resource_type: "auto", // Cloudinary will auto-detect the file type
-      folder: "blogs", // Optional: specify the folder in Cloudinary
+      folder: "blog-cover" // Optional: specify the folder in Cloudinary
     });
 
     // Return the image URL
@@ -91,7 +95,7 @@ export const uploadBlogImages = async (images) => {
       // Upload each image (buffer) to Cloudinary
       const uploadResponse = await cloudinaryV2.uploader.upload(image, {
         resource_type: "auto", // Cloudinary automatically detects the file type (image/video/etc.)
-        folder: "blogs", // Optional: specify the folder in Cloudinary
+        folder: "blog-images" // Optional: specify the folder in Cloudinary
       });
 
       uploadedImages.push(uploadResponse.secure_url); // Push the image URL to the uploadedImages array
@@ -109,7 +113,7 @@ export const uploadTeamMemberImage = async (image) => {
     // Upload the image to Cloudinary
     const uploadResponse = await cloudinaryV2.uploader.upload(image, {
       resource_type: "auto", // Cloudinary will auto-detect the file type
-      folder: "team", // Optional: specify the folder in Cloudinary
+      folder: "team" // Optional: specify the folder in Cloudinary
     });
 
     // Return the image URL
@@ -125,7 +129,7 @@ export const uploadProfileImage = async (image) => {
     // Upload the image to Cloudinary
     const uploadResponse = await cloudinaryV2.uploader.upload(image, {
       resource_type: "auto", // Cloudinary will auto-detect the file type
-      folder: "profile", // Optional: specify the folder in Cloudinary
+      folder: "profile" // Optional: specify the folder in Cloudinary
     });
 
     // Return the image URL

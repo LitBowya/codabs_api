@@ -39,7 +39,10 @@ if (process.env.NODE_ENV === "production") {
 } else {
   app.set("trust proxy", false); // Disable trust proxy in development
 }
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}));
 app.use(cookieParser());
 app.use(compression());
 app.use(express.json({ limit: "100mb" }));
@@ -49,7 +52,7 @@ const limiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
   max: 500, // Limit each IP to 500 requests per windowMs
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  legacyHeaders: false // Disable the `X-RateLimit-*` headers
 });
 
 app.use(limiter);
@@ -71,8 +74,9 @@ app.use("/api/blog", blogRoutes);
 app.use("/api/team", ourteamRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/faq", faqRoutes);
-app.use("/api/appointment", appointmentRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/appointment", appointmentRoutes);
+
 
 // Error handling middleware
 app.use(notFound);
