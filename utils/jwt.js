@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 // Create a token
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-    expiresIn: "7d", // adjust based on your needs
+    expiresIn: "7d" // adjust based on your needs
   });
 };
 
@@ -15,8 +15,8 @@ const sendToken = (res, user, message = "Success", statusCode = 200) => {
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production", // only send cookie over HTTPS in production
-    sameSite: "Strict",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    sameSite: "None",
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   };
 
   // Don't send password to client
@@ -26,7 +26,7 @@ const sendToken = (res, user, message = "Success", statusCode = 200) => {
     success: true,
     message,
     user,
-    token,
+    token
   });
 };
 
@@ -36,12 +36,12 @@ const clearToken = (res) => {
     .clearCookie("token", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      sameSite: "Strict"
     })
     .status(200)
     .json({
       success: true,
-      message: "Logged out successfully",
+      message: "Logged out successfully"
     });
 };
 
