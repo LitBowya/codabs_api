@@ -74,19 +74,24 @@ Here are your secure login credentials:
 🔒 Temporary Password: ${tempPassword}
 
 🚨 First-Time Login REQUIRED:
-1. Visit: app.codabs.com/login
+1. Visit: ${process.env.FRONTEND_URL}/login
 2. Enter your credentials above
-3. IMMEDIATELY change your password under "Account Security"
+3. IMMEDIATELY change your password on the "Login Page" using "Forgot Password" option
 
 💡 Pro Tip: Create a strong password combination we've never seen you use elsewhere!
 
 Build with confidence,
 The CODABS Team 🏗️
-      `.trim()
+  `.trim()
     });
 
-    res.status(200).json({ success: true, message: `User registered with ID: ${userId}`, user });
-
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: `User registered with ID: ${userId}`,
+        user
+      });
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).json({

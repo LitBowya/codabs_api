@@ -46,12 +46,32 @@ export const getAnalyticsSummary = async (req, res) => {
       { $unwind: "$project" }
     ]);
 
+    const serviceVisits = await Analytics.aggregate([
+      { $match: { type: "service" } },
+      {
+        $group: {
+          _id: "$referenceId",
+          views: { $sum: 1 }
+        }
+      },
+      {
+        $lookup: {
+          from: "services",
+          localField: "_id",
+          foreignField: "_id",
+          as: "service"
+        }
+      },
+      { $unwind: "$service" }
+    ]);
+
     res.status(200).json({
       success: true,
       data: {
         totalPageVisits,
         blogVisits,
-        projectVisits
+        projectVisits,
+        serviceVisits
       }
     });
   } catch (error) {
